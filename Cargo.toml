@@ -1,0 +1,9 @@
+[package]
+name = "packall"
+version = "0.1.0"
+authors = ["Éverton M. Vieira <everton.muvi@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+chrono = "0.4.19"
+clap = "2.33.3"
