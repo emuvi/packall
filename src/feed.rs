@@ -14,7 +14,7 @@ impl head::Head<'_> {
 		} else {
 			self.feed_file(path.to_owned());
 		}
-	}	
+	}
 
 	fn feed_dir(&self, dir: PathBuf) {
 		let entries = dir.read_dir().unwrap();
