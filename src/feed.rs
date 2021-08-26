@@ -86,14 +86,17 @@ impl body::Head {
 				let err_msg = format!("Could not send to be eaten this file: '{}'", file.display());
 				sender.send(file).expect(&err_msg);
 			} else {
+				if self.clean {
+					utils::try_put_suffix(&file, " (invalid)");
+				}
 				println!(
-					"Feeding failed because file is not allowed: '{}' ",
+					"Feeding failed because was not allowed this file: '{}' ",
 					file.display()
 				);
 			}
 		} else {
 			println!(
-				"Feeding failed because file does not exists: '{}'",
+				"Feeding failed because does not exists the file: '{}'",
 				file.display()
 			);
 		}
