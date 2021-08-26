@@ -1,9 +1,9 @@
-use crate::head;
+use crate::body;
 
-impl head::Head<'_> {
+impl body::Head {
 	
 	pub fn search(&self, words: &str) {
-		println!("Searchinf for: {}", words);
+		println!("Searchinf for: '{}'", words);
 	}
 	
 }

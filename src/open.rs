@@ -1,6 +1,6 @@
-use crate::head;
+use crate::body;
 
-impl head::Head<'_> {
+impl body::Head {
 	
 	pub fn open(&self) {
 		println!("Opening the founds...");

@@ -1,9 +1,9 @@
-use crate::head;
+use crate::body;
 
-impl head::Head<'_> {
+impl body::Head {
 	
 	pub fn lend(&self, path: &str) {
-		println!("Lending to: {}", path);
+		println!("Lending to: '{}'", path);
 	}
 	
 }

@@ -1,9 +1,9 @@
-use crate::head;
+use crate::body;
 
-impl head::Head<'_> {
+impl body::Head {
 	
 	pub fn digest(&self) {
-		println!("Digesting on: {}", self.body);
+		println!("Digesting on: '{}'", self.body.display());
 	}
 	
 }

@@ -1,9 +1,9 @@
-use crate::head;
+use crate::body;
 
-impl head::Head<'_> {
+impl body::Head {
 	
 	pub fn give(&self, path: &str) {
-		println!("Giving to: {}", path);
+		println!("Giving to: '{}'", path);
 	}
 	
 }
