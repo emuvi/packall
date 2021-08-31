@@ -2,7 +2,7 @@ use clap::{App, Arg, ArgMatches};
 
 pub fn run<'a>() -> ArgMatches<'a> {
 	App::new("Packall")
-    .version("0.1.0")
+    .version(clap::crate_version!())
     .author("Éverton M. Vieira <everton.muvi@gmail.com>")
     .about("Eats all the books you feed and keeps them organized, first in the belly, after in the body, for future searches.")
     .arg(

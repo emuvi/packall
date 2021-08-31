@@ -23,7 +23,7 @@ impl Head {
 		}
 		let mut allow_extensions: Vec<String> = vec![];
 		let body_path = Path::new(&body).to_owned();
-		let body_cfg_path = body_path.join("body.json");
+		let body_cfg_path = body_path.join("(meta)").join("body.json");
 		if body_cfg_path.exists() {
 			let body_cfg_json = fs::read_to_string(body_cfg_path)
 				.expect("The body config could not be read.");

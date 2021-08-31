@@ -54,12 +54,19 @@ impl body::Head {
 				}
 			}
 		}
+		let mut has_files = false;
 		for entry in &entries {
 			if let Ok(entry) = entry.as_ref() {
 				let path = entry.path();
 				if !path.is_dir() {
+					has_files = true;
 					self.feed_file(path, sender);
 				}
+			}
+		}
+		if !has_files && self.clean {
+			if fs::remove_dir(&dir).is_ok() {
+				println!("Cleaned the folder: '{}'", dir.display());
 			}
 		}
 	}
@@ -86,9 +93,6 @@ impl body::Head {
 				let err_msg = format!("Could not send to be eaten this file: '{}'", file.display());
 				sender.send(file).expect(&err_msg);
 			} else {
-				if self.clean {
-					utils::try_put_suffix(&file, " (invalid)");
-				}
 				println!(
 					"Feeding failed because was not allowed this file: '{}' ",
 					file.display()
@@ -110,7 +114,14 @@ impl body::Head {
 		let second = &verifier[3..6];
 		let destiny = self.body.join(first).join(second).join(&verifier);
 		if !destiny.exists() {
+			println!("Copying the file: '{}' as: '{}'", path.display(), verifier);
 			copy_file(&path, &destiny);
+		} else {
+			println!(
+				"We already have the file: '{}' as: '{}'",
+				path.display(),
+				verifier
+			);
 		}
 		add_meta_data(&path, &destiny);
 		if self.clean {
@@ -153,6 +164,9 @@ impl body::Head {
 			}
 			if let Some(parent) = path.parent() {
 				meta::add_file_tree(&origin, &format!("{}", parent.display()));
+			}
+			if let Some(old_main_meta) = utils::find_main_meta(path) {
+				meta::import_main_meta(&origin, &old_main_meta);
 			}
 		}
 	}

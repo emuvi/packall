@@ -1,7 +1,41 @@
 use rand::distributions::Alphanumeric;
 use rand::{thread_rng, Rng};
-use std::fs;
 use std::path::PathBuf;
+use std::io::Write;
+
+pub fn find_main_meta(item_file: &PathBuf) -> Option<PathBuf> {
+    let steam = match item_file.file_stem() {
+        Some(steam) => steam,
+        None => return None,
+    };
+    let steam = match steam.to_str() {
+        Some(steam) => steam,
+        None => return None,
+    };
+    let parent = match item_file.parent() {
+        Some(parent) => parent,
+        None => return None,
+    };
+    let entries = match parent.read_dir() {
+        Ok(entries) => entries,
+        Err(_) => return None,
+    };
+    let main_meta_name = format!("{}.main.meta", steam);
+    for entry in entries {
+        let entry = match entry {
+            Ok(entry) => entry,
+            Err(_) => continue,
+        };
+        let file_name = match entry.file_name().into_string() {
+            Ok(file_name) => file_name,
+            Err(_) => continue,
+        };
+        if file_name == main_meta_name {
+            return Some(parent.join(main_meta_name));
+        }
+    }
+    return None;
+}
 
 pub fn find_origin(item_dir: &PathBuf) -> PathBuf {
     let entries = item_dir.read_dir().expect(&format!(
@@ -41,41 +75,18 @@ pub fn new_origin(item_dir: &PathBuf, from_path: &PathBuf) -> PathBuf {
     item_dir.join(new_name)
 }
 
-pub fn try_put_suffix(on_file_path: &PathBuf, suffix: &str) {
-    let mut old_name = String::new();
-    if let Some(steam) = on_file_path.file_stem() {
-        if let Some(steam) = steam.to_str() {
-            old_name.push_str(steam);
-        }
-    }
-    if old_name.is_empty() || old_name.ends_with(suffix) {
-        return;
-    }
-    let mut extension = String::new();
-    if let Some(from_extension) = on_file_path.extension() {
-        if let Some(from_extension) = from_extension.to_str() {
-            extension.push_str(".");
-            extension.push_str(from_extension);
-        }
-    }
-    loop {
-        let mut attempt = 1;
-        let mut new_name = old_name.clone();
-        if attempt > 1 {
-            new_name.push_str(" (");
-            new_name.push_str(&attempt.to_string());
-            new_name.push_str(")");
-        }
-        new_name.push_str(suffix);
-        new_name.push_str(&extension);
-        if let Some(parent) = on_file_path.parent() {
-            let destiny = parent.join(new_name);
-            if destiny.exists() {
-                attempt += 1;
-                continue;
-            }
-            let _ = fs::rename(on_file_path, destiny);
-            break;
-        }
-    }
+pub fn append_lines_on_file(file_path: &PathBuf, lines: &str) {
+	let mut file = std::fs::OpenOptions::new()
+		.write(true)
+		.create(!file_path.exists())
+		.append(file_path.exists())
+		.open(file_path)
+		.expect(&format!(
+			"Could not append lines because could not open the file: '{}'",
+			file_path.display()
+		));
+	writeln!(file, "{}", lines).expect(&format!(
+		"Could not append lines because could not write the file: '{}'",
+		file_path.display()
+	));
 }
