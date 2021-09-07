@@ -13,7 +13,7 @@ use crate::utils;
 
 impl body::Head {
 	pub fn feed(&self, path: &str) {
-		println!("Feeding from: '{}'", path);
+		println!("Feeding from: '{}'...", path);
 		crossbeam::scope(|scope| {
 			let (s, r) = unbounded::<PathBuf>();
 			scope.spawn(|_| {
@@ -38,7 +38,7 @@ impl body::Head {
 	}
 
 	fn feed_dir(&self, dir: PathBuf, sender: &Sender<PathBuf>) {
-		println!("Feeding folder: '{}'", dir.display());
+		println!("Feeding folder: '{}'...", dir.display());
 		let entries: Vec<_> = dir
 			.read_dir()
 			.expect(&format!(
