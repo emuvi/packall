@@ -1,6 +1,6 @@
 use clap::{App, Arg, ArgMatches};
 
-pub fn run<'a>() -> ArgMatches<'a> {
+pub fn parse<'a>() -> ArgMatches<'a> {
 	App::new("Packall")
     .version(clap::crate_version!())
     .author("Éverton M. Vieira <everton.muvi@gmail.com>")
@@ -11,7 +11,7 @@ pub fn run<'a>() -> ArgMatches<'a> {
         .long("body")
         .value_name("DIR")
         .takes_value(true)
-        .required(true)
+        .required(false)
         .help("Where all books I eat ends up"))
     .arg(
       Arg::with_name("speed")

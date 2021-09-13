@@ -1,6 +1,6 @@
 [package]
 name = "packall"
-version = "0.3.2"
+version = "0.3.3"
 authors = ["Éverton M. Vieira <everton.muvi@gmail.com>"]
 edition = "2018"
 

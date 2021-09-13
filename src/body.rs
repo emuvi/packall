@@ -57,11 +57,4 @@ impl Head {
 			allow_extensions,
 		}
 	}
-
-	pub fn start(&self) {
-		println!("Packall starting...");
-		println!("Body: '{}'", self.body.display());
-		println!("Speed: '{}'", self.speed);
-		println!("Clean: '{}'", self.clean);
-	}
 }

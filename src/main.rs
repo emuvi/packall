@@ -11,32 +11,43 @@ mod search;
 mod utils;
 
 fn main() {
-	let clip = clip::run();
-	let body = String::from(clip.value_of("body").expect("You must inform the body."));
-	let speed_str = clip.value_of("speed").expect("You must pass a speed.");
+	let args = clip::parse();
+	let body: String;
+	if args.is_present("body") {
+		body = String::from(args.value_of("body").expect("You must pass a body."));
+	} else {
+		let body_err_msg = "You let me as an errant soul. You must give me a body, as an argument -b / --body or environment variable PACKALL_BODY";
+		let body_env = std::env::var_os("PACKALL_BODY").expect(body_err_msg);
+		let body_env = body_env.to_str().expect(body_err_msg);
+		body = format!("{}", body_env);
+	}
+	let speed_str = args.value_of("speed").expect("You must pass a speed.");
 	let speed = speed_str.parse().expect("You must pass a valid speed.");
-	let clean = clip.is_present("clean");
+	let clean = args.is_present("clean");
+	println!("Packall starting...");
+	println!("Body: '{}'", body);
+	println!("Speed: '{}'", speed);
+	println!("Clean: '{}'", clean);
 	let brain = body::Head::new(body, speed, clean);
-	brain.start();
-	if let Some(path) = clip.value_of("feed") {
+	if let Some(path) = args.value_of("feed") {
 		brain.feed(path);
 	}
-	if clip.is_present("digest") {
+	if args.is_present("digest") {
 		brain.digest();
 	}
-	if let Some(words) = clip.value_of("search") {
+	if let Some(words) = args.value_of("search") {
 		brain.search(words);
 	}
-	if let Some(path) = clip.value_of("lend") {
+	if let Some(path) = args.value_of("lend") {
 		brain.lend(path);
 	}
-	if let Some(path) = clip.value_of("give") {
+	if let Some(path) = args.value_of("give") {
 		brain.give(path);
 	}
-	if clip.is_present("junk") {
+	if args.is_present("junk") {
 		brain.junk();
 	}
-	if clip.is_present("open") {
+	if args.is_present("open") {
 		brain.open();
 	}
 	println!("PackAll finished execution!");
