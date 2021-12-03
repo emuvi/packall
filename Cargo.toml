@@ -1,6 +1,8 @@
 [package]
-name = "packall-qic"
-version = "0.3.3"
+name = "packall"
+version = "0.1.0"
+description = "Eats all the files you feed and keeps them organized, first in the belly, after in the body, for future searches."
+repository = "https://github.com/emuvi/packall"
 authors = ["Éverton M. Vieira <everton.muvi@gmail.com>"]
 edition = "2018"
 

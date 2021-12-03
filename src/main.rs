@@ -14,7 +14,7 @@ fn main() {
 	let args = clip::parse();
 	let body: String;
 	if args.is_present("body") {
-		body = String::from(args.value_of("body").expect("You must pass a body."));
+		body = String::from(args.value_of("body").expect("Problem on read body argument."));
 	} else {
 		let body_err_msg = "You let me as an errant soul. You must give me a body, as an argument -b / --body or environment variable PACKALL_BODY";
 		let body_env = std::env::var_os("PACKALL_BODY").expect(body_err_msg);
