@@ -1,5 +1,6 @@
-Packall-QiC
+Packall
 =======
+
 Eats all the files you feed and keeps them organized, 
 first in the belly, after in the body, for future searches.
 
