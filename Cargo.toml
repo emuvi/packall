@@ -1,6 +1,6 @@
 [package]
 name = "packall"
-description = "Eats all the files you feed and keeps them organized, first in the belly, after in the body, for future searches."
+description = "Packall is a command that eats all the files you feed and keeps them organized, first in the belly, after in the body, for future searches."
 repository = "https://github.com/emuvi/packall"
 authors = ["Éverton M. Vieira <everton.muvi@gmail.com>"]
 license = "LGPL-3.0-only"
