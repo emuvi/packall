@@ -14,8 +14,6 @@ Packall is a command that eats all the files you feed and keeps them organized, 
 
 ### Files structure
 
-// TODO - Update the file structure and flatten one hierarchical folder.
-
 The files are kept in subdirectories inside the body root directory. The main factor of
 organization is the SHA256 checksum of the origin file. Each file is kept inside of three
 nested directories. The first directory name is the three first characters from the
@@ -24,4 +22,3 @@ checksum until the sixth. Finally, the last and third directory name is made wit
 checksum. Inside the third and last directory our file is stored. The name of the stored
 file is made with the start of "org-", that comes from "origin", plus a sequence of
 eighteen random characters and his extension.
-
