@@ -3,8 +3,8 @@ use clap::{App, Arg, ArgMatches};
 pub fn parse<'a>() -> ArgMatches<'a> {
     App::new("Packall")
         .version(clap::crate_version!())
+        .about("Packall is a command program that eats all the files you feed and keeps them organized, first in the belly, then in the body (indexed), for future searches.")
         .author("Éverton M. Vieira <everton.muvi@gmail.com>")
-        .about("Eats all the books you feed and keeps them organized, first in the belly, after in the body, for future searches.")
         .arg(
             Arg::with_name("body")
                 .short("b")
