@@ -30,27 +30,27 @@ fn main() {
 	println!("Body: '{}'", body);
 	println!("Speed: '{}'", speed);
 	println!("Clean: '{}'", clean);
-	let brain = body::Head::new(body, speed, clean);
+	let head = body::Head::new(body, speed, clean);
 	if let Some(path) = args.value_of("feed") {
-		brain.feed(path);
+		head.feed(path);
 	}
 	if args.is_present("digest") {
-		brain.digest();
+		head.digest();
 	}
 	if let Some(words) = args.value_of("search") {
-		brain.search(words);
+		head.search(words);
 	}
 	if let Some(path) = args.value_of("lend") {
-		brain.lend(path);
+		head.lend(path);
 	}
 	if let Some(path) = args.value_of("give") {
-		brain.give(path);
+		head.give(path);
 	}
 	if args.is_present("junk") {
-		brain.junk();
+		head.junk();
 	}
 	if args.is_present("open") {
-		brain.open();
+		head.open();
 	}
 	println!("PackAll finished execution!");
 }
