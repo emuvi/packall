@@ -5,7 +5,7 @@ repository = "https://github.com/emuvi/packall"
 authors = ["Éverton M. Vieira <everton.muvi@gmail.com>"]
 license = "LGPL-3.0-only"
 version = "0.1.0"
-edition = "2018"
+edition = "2021"
 
 [dependencies]
 clap = { version = "3", features = ["cargo"] }
