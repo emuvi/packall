@@ -1,9 +1,5 @@
-use crate::body;
+use crate::data::Body;
 
-impl body::Head {
-	
-	pub fn give(&self, path: &str) {
-		println!("Giving to: '{}'", path);
-	}
-	
+pub fn start(_body: &Body, path: &str) {
+  println!("Giving to: '{}'", path);
 }

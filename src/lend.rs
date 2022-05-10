@@ -1,9 +1,5 @@
-use crate::body;
+use crate::data::Body;
 
-impl body::Head {
-	
-	pub fn lend(&self, path: &str) {
-		println!("Lending to: '{}'", path);
-	}
-	
+pub fn start(_body: &Body, path: &str) {
+  println!("Lending to: '{}'", path);
 }

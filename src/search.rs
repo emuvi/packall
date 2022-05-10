@@ -1,9 +1,5 @@
-use crate::body;
+use crate::data::Body;
 
-impl body::Head {
-	
-	pub fn search(&self, words: &str) {
-		println!("Searchinf for: '{}'", words);
-	}
-	
+pub fn start(_body: &Body, words: &str) {
+  println!("Searchinf for: '{}'", words);
 }

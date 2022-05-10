@@ -1,9 +1,5 @@
-use crate::body;
+use crate::data::Body;
 
-impl body::Head {
-	
-	pub fn digest(&self) {
-		println!("Digesting on: '{}'", self.body.display());
-	}
-	
+pub fn start(body: &Body) {
+  println!("Digesting on: '{}'", body.home.root.display());
 }

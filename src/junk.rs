@@ -1,9 +1,5 @@
-use crate::body;
+use crate::data::Body;
 
-impl body::Head {
-	
-	pub fn junk(&self) {
-		println!("Junking the founds...");
-	}
-	
+pub fn start(_body: &Body) {
+  println!("Junking the founds...");
 }

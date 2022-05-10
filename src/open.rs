@@ -1,9 +1,5 @@
-use crate::body;
+use crate::data::Body;
 
-impl body::Head {
-	
-	pub fn open(&self) {
-		println!("Opening the founds...");
-	}
-	
+pub fn start(_body: &Body) {
+  println!("Opening the founds...");
 }
