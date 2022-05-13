@@ -1,6 +1,5 @@
 use crossbeam;
-use crossbeam_channel::unbounded;
-use crossbeam_channel::Sender;
+use crossbeam_channel::{self, Sender};
 use std::fs;
 use std::path::PathBuf;
 use unicase::UniCase;
@@ -10,7 +9,7 @@ use crate::data::Body;
 pub fn start(body: &Body, path: &str) {
   println!("Feeding from: '{}'...", path);
   crossbeam::scope(|scope| {
-    let (sender, recv) = unbounded::<PathBuf>();
+    let (sender, recv) = crossbeam_channel::unbounded::<PathBuf>();
     scope.spawn(|_| {
       let path = PathBuf::from(path);
       if path.is_dir() {
