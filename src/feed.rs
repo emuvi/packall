@@ -103,7 +103,7 @@ fn feed_file(body: &Body, file: PathBuf, sender: &Sender<PathBuf>) {
 
 pub fn eat_file(body: &Body, file: PathBuf) {
   println!("Eating file: '{}'", file.display());
-  let verifier = crate::utils::get_verifier(&file);
+  let verifier = crate::files::verify(&file);
   println!("Verifier of file: '{}' is: '{}'", file.display(), verifier);
   let first_level = &verifier[0..3];
   let second_level = &verifier[3..6];
@@ -115,7 +115,7 @@ pub fn eat_file(body: &Body, file: PathBuf) {
     .join(&verifier);
   if !destiny_dir.exists() {
     println!("Copying the file: '{}' as: '{}'", file.display(), verifier);
-    crate::utils::copy_file(&file, &destiny_dir);
+    crate::files::copy(&file, &destiny_dir);
   } else {
     println!(
       "We already have the file: '{}' as: '{}'",
@@ -123,7 +123,7 @@ pub fn eat_file(body: &Body, file: PathBuf) {
       verifier
     );
   }
-  crate::utils::add_meta_data(&file, &destiny_dir);
+  crate::meta::add_all_meta_data(&file, &destiny_dir);
   if body.head.clean {
     if std::fs::remove_file(&file).is_ok() {
       println!("Cleaned the file: '{}'", file.display());
