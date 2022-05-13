@@ -21,27 +21,30 @@ fn main() {
   println!("Body: '{}'", body);
   println!("Speed: '{}'", speed);
   println!("Clean: '{}'", clean);
-  let head = packall::data::Body::new(body, speed, clean);
+  let body = packall::data::Body::new(body, speed, clean);
   if let Some(path) = args.value_of("feed") {
-    packall::feed::start(&head, path);
+    packall::feed::start(&body, path);
   }
   if args.is_present("digest") {
-    packall::digest::start(&head);
+    packall::digest::start(&body);
   }
   if let Some(words) = args.value_of("search") {
-    packall::search::start(&head, words);
+    packall::search::start(&body, words);
   }
   if let Some(path) = args.value_of("lend") {
-    packall::lend::start(&head, path);
+    packall::lend::start(&body, path);
   }
   if let Some(path) = args.value_of("give") {
-    packall::give::start(&head, path);
+    packall::give::start(&body, path);
   }
   if args.is_present("junk") {
-    packall::junk::start(&head);
+    packall::junk::start(&body);
   }
   if args.is_present("open") {
-    packall::open::start(&head);
+    packall::open::start(&body);
   }
+  println!("#------------------------------------------------------#");
+  body.logs.print();
+  println!("#------------------------------------------------------#");
   println!("PackAll finished execution!");
 }

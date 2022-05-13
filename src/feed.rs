@@ -115,26 +115,32 @@ pub fn eat_file(body: &Body, file: PathBuf) {
   if !destiny_dir.exists() {
     println!("Copying the file: '{}' as: '{}'", file.display(), verifier);
     crate::files::copy(&file, &destiny_dir);
+    body.logs.sum_one("Copied files during eating");
   } else {
     println!(
       "We already have the file: '{}' as: '{}'",
       file.display(),
       verifier
     );
+    body.logs.sum_one("Duplicate files during eating");
   }
   crate::meta::add_all_meta_data(&file, &destiny_dir);
   if body.head.clean {
     if std::fs::remove_file(&file).is_ok() {
       println!("Cleaned the file: '{}'", file.display());
+      body.logs.sum_one("Cleaned files during eating");
     } else {
       println!("Could not clean the file: '{}'", file.display());
+      body.logs.sum_one("Couldn't files clean during eating");
     }
     if let Some(parent) = &file.parent() {
       if std::fs::remove_dir(parent).is_ok() {
         println!("Cleaned the folder: '{}'", parent.display());
+        body.logs.sum_one("Cleaned folders during eating");
       }
     }
   }
+  body.logs.sum_one("Eaten files");
   println!(
     "Successfully eaten file: '{}' by: '{}'",
     file.display(),
