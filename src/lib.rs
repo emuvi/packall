@@ -5,6 +5,7 @@ pub mod files;
 pub mod give;
 pub mod junk;
 pub mod lend;
+pub mod logs;
 pub mod meta;
 pub mod open;
 pub mod origin;

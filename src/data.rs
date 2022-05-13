@@ -2,9 +2,12 @@ use serde_json::Value;
 use std::path::Path;
 use std::path::PathBuf;
 
+use crate::logs::Logger;
+
 pub struct Body {
   pub head: Head,
   pub home: Home,
+  pub logs: Logger,
 }
 
 pub struct Home {
@@ -71,6 +74,7 @@ impl Body {
         allow_extensions,
       },
       home: Home { root, pack, meta },
+      logs: Logger::new(),
     }
   }
 }
