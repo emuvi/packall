@@ -8,8 +8,8 @@ pub struct Body {
 }
 
 pub struct Home {
-  pub tree: PathBuf,
   pub meta: PathBuf,
+  pub pack: PathBuf,
   pub root: PathBuf,
 }
 
@@ -31,14 +31,13 @@ impl Body {
     }
     let mut allow_extensions: Vec<String> = vec![];
     let root = root.to_owned();
-
-    let meta = root.join("(meta)");
-    if std::fs::create_dir_all(&meta).is_err() {
-      panic!("Could not create the body meta directory.");
+    let pack = root.join("(pack)");
+    if std::fs::create_dir_all(&pack).is_err() {
+      panic!("Could not create the body pack directory.");
     }
-    let tree = root.join("(tree)");
-    if std::fs::create_dir_all(&tree).is_err() {
-      panic!("Could not create the body tree directory.");
+    let meta = pack.join("(meta)");
+    if std::fs::create_dir_all(&meta).is_err() {
+      panic!("Could not create the pack meta directory.");
     }
     let meta_cfgs_path = meta.join("cfgs.json");
     if meta_cfgs_path.exists() {
@@ -71,7 +70,7 @@ impl Body {
         clean,
         allow_extensions,
       },
-      home: Home { tree, meta, root },
+      home: Home { root, pack, meta },
     }
   }
 }

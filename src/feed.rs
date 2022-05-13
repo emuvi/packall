@@ -101,31 +101,36 @@ fn feed_file(body: &Body, file: PathBuf, sender: &Sender<PathBuf>) {
   }
 }
 
-pub fn eat_file(body: &Body, path: PathBuf) {
-  println!("Eating file: '{}'", path.display());
-  let verifier = crate::utils::get_verifier(&path);
-  println!("Verified file: '{}' as: '{}'", path.display(), verifier);
-  let first = &verifier[0..3];
-  let second = &verifier[3..6];
-  let destiny = body.home.tree.join(first).join(second).join(&verifier);
-  if !destiny.exists() {
-    println!("Copying the file: '{}' as: '{}'", path.display(), verifier);
-    crate::utils::copy_file(&path, &destiny);
+pub fn eat_file(body: &Body, file: PathBuf) {
+  println!("Eating file: '{}'", file.display());
+  let verifier = crate::utils::get_verifier(&file);
+  println!("Verifier of file: '{}' is: '{}'", file.display(), verifier);
+  let first_level = &verifier[0..3];
+  let second_level = &verifier[3..6];
+  let destiny_dir = body
+    .home
+    .pack
+    .join(first_level)
+    .join(second_level)
+    .join(&verifier);
+  if !destiny_dir.exists() {
+    println!("Copying the file: '{}' as: '{}'", file.display(), verifier);
+    crate::utils::copy_file(&file, &destiny_dir);
   } else {
     println!(
       "We already have the file: '{}' as: '{}'",
-      path.display(),
+      file.display(),
       verifier
     );
   }
-  crate::utils::add_meta_data(&path, &destiny);
+  crate::utils::add_meta_data(&file, &destiny_dir);
   if body.head.clean {
-    if std::fs::remove_file(&path).is_ok() {
-      println!("Cleaned the file: '{}'", path.display());
+    if std::fs::remove_file(&file).is_ok() {
+      println!("Cleaned the file: '{}'", file.display());
     } else {
-      println!("Could not clean the file: '{}'", path.display());
+      println!("Could not clean the file: '{}'", file.display());
     }
-    if let Some(parent) = &path.parent() {
+    if let Some(parent) = &file.parent() {
       if std::fs::remove_dir(parent).is_ok() {
         println!("Cleaned the folder: '{}'", parent.display());
       }
@@ -133,7 +138,7 @@ pub fn eat_file(body: &Body, path: PathBuf) {
   }
   println!(
     "Successfully eaten file: '{}' by: '{}'",
-    path.display(),
+    file.display(),
     verifier
   );
 }

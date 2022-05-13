@@ -1,7 +1,5 @@
 use sha2::{Digest, Sha256};
 
-use rand::distributions::Alphanumeric;
-use rand::{thread_rng, Rng};
 use std::io::Write;
 use std::path::PathBuf;
 
@@ -18,65 +16,42 @@ pub fn get_verifier(path: &PathBuf) -> String {
   format!("{:x}", sha256.finalize())
 }
 
-pub fn copy_file(path: &PathBuf, destiny: &PathBuf) {
-  std::fs::create_dir_all(&destiny).expect(&format!(
+pub fn copy_file(new_file: &PathBuf, destiny_dir: &PathBuf) {
+  std::fs::create_dir_all(&destiny_dir).expect(&format!(
     "Could not create the destiny dir: '{}'",
-    destiny.display()
+    destiny_dir.display()
   ));
-  let destiny_file = new_origin(destiny, path);
-  std::fs::copy(path, destiny_file).expect(&format!(
+  let destiny_file = new_origin(destiny_dir, new_file);
+  std::fs::copy(new_file, destiny_file).expect(&format!(
     "Could not copy the eat file: '{}' to the destiny: '{}'",
-    path.display(),
-    destiny.display()
+    new_file.display(),
+    destiny_dir.display()
   ));
 }
 
 pub fn find_main_meta(item_file: &PathBuf) -> Option<PathBuf> {
-  let steam = match item_file.file_stem() {
-    Some(steam) => steam,
-    None => return None,
-  };
-  let steam = match steam.to_str() {
-    Some(steam) => steam,
-    None => return None,
-  };
   let parent = match item_file.parent() {
     Some(parent) => parent,
     None => return None,
   };
-  let entries = match parent.read_dir() {
-    Ok(entries) => entries,
-    Err(_) => return None,
-  };
-  let main_meta_name = format!("{}.main.meta", steam);
-  for entry in entries {
-    let entry = match entry {
-      Ok(entry) => entry,
-      Err(_) => continue,
-    };
-    let file_name = match entry.file_name().into_string() {
-      Ok(file_name) => file_name,
-      Err(_) => continue,
-    };
-    if file_name == main_meta_name {
-      return Some(parent.join(main_meta_name));
-    }
+  let main_meta_path = parent.join("main.meta");
+  if main_meta_path.exists() {
+    return Some(main_meta_path);
   }
-  return None;
+  None
 }
 
-pub fn add_meta_data(path: &PathBuf, destiny: &PathBuf) {
-  let origin = find_origin(&destiny);
-  if let Some(file_name) = path.file_name() {
+pub fn add_meta_data(of_file: &PathBuf, destiny_dir: &PathBuf) {
+  if let Some(file_name) = of_file.file_name() {
     if let Some(file_name) = file_name.to_str() {
-      crate::meta::add_file_name(&origin, file_name);
+      crate::meta::add_file_name_on(&destiny_dir, file_name);
     }
   }
-  if let Some(parent) = path.parent() {
-    crate::meta::add_file_tree(&origin, &format!("{}", parent.display()));
+  if let Some(parent) = of_file.parent() {
+    crate::meta::add_file_tree_on(&destiny_dir, &format!("{}", parent.display()));
   }
-  if let Some(old_main_meta) = find_main_meta(path) {
-    crate::meta::import_main_meta(&origin, &old_main_meta);
+  if let Some(old_main_meta) = find_main_meta(of_file) {
+    crate::meta::import_main_meta_on(&destiny_dir, &old_main_meta);
   }
 }
 
@@ -90,7 +65,7 @@ pub fn find_origin(item_dir: &PathBuf) -> PathBuf {
       let file_name = entry.file_name();
       let file_name = file_name.to_str();
       if let Some(file_name) = file_name {
-        if file_name.starts_with("org-") && !file_name.ends_with(".meta") {
+        if file_name.starts_with("main") && !file_name.ends_with(".meta") {
           return item_dir.join(file_name);
         }
       }
@@ -100,21 +75,13 @@ pub fn find_origin(item_dir: &PathBuf) -> PathBuf {
 }
 
 pub fn new_origin(item_dir: &PathBuf, from_path: &PathBuf) -> PathBuf {
-  let mut new_name = String::from("org-");
-  let new_token: String = thread_rng()
-    .sample_iter(&Alphanumeric)
-    .take(18)
-    .map(char::from)
-    .collect();
-  new_name.push_str(&new_token.to_lowercase());
-  let mut extension = String::new();
+  let mut new_name = String::from("main");
   if let Some(from_extension) = from_path.extension() {
     if let Some(from_extension) = from_extension.to_str() {
-      extension.push_str(".");
-      extension.push_str(from_extension);
+      new_name.push_str(".");
+      new_name.push_str(from_extension);
     }
   }
-  new_name.push_str(&extension);
   item_dir.join(new_name)
 }
 
