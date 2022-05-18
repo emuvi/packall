@@ -4,7 +4,7 @@ pub fn parse() -> ArgMatches {
   Command::new("Packall")
     .version(clap::crate_version!())
     .about("Packall is a library and a command program that eats all the files you feed and keeps them organized, first in the belly, then in the body (indexed), for future searches.")
-    .author("Éverton M. Vieira <everton.muvi@gmail.com>")
+    .author("Éverton M. Vieira <emuvi@outlook.com.br>")
     .arg(
       Arg::new("body")
         .short('b')

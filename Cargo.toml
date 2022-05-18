@@ -2,7 +2,7 @@
 name = "packall"
 description = "Packall is a library and a command program that eats all the files you feed and keeps them organized, first in the belly, then in the body (indexed), for future searches."
 repository = "https://github.com/emuvi/packall"
-authors = ["Éverton M. Vieira <everton.muvi@gmail.com>"]
+authors = ["Éverton M. Vieira <emuvi@outlook.com.br>"]
 license = "LGPL-3.0-only"
 version = "0.1.0"
 edition = "2021"
